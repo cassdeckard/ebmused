@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "rc.exe resource",
+            "command": "rc.exe",
+            "type": "shell",
+            "args": [
+                "${workspaceFolder}\\src\\resource.rc",
+            ],
+            "options": {  
+                "cwd": "${workspaceFolder}/ide/vs2015"  
+            },  
+            "problemMatcher": [ "$msCompile" ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {  
+            "label": "cl.exe build",  
+            "command": "cl.exe",  
+            "type": "shell",  
+            "args": [ 
+                "/Zi",
+                "/EHsc",
+                "/Fe:",
+                "${workspaceFolder}\\out\\ebmused.exe",
+                "${workspaceFolder}\\src\\*.c",
+                "user32.lib",
+                "gdi32.lib",
+                "user32.lib",
+                "kernel32.lib",
+                "comdlg32.lib",
+                "comctl32.lib",
+                "winmm.lib",
+                "/link",
+                "${workspaceFolder}\\src\\resource.res",
+             ],  
+            "options": {  
+                "cwd": "${workspaceFolder}/ide/vs2015"  
+            },  
+            "problemMatcher": [ "$msCompile" ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build",
+            "dependsOn": ["rc.exe resource", "cl.exe build"]
+        }
+    ]
+}
