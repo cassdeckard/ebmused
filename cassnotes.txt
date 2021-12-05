@@ -1,0 +1,70 @@
+
+Things loadrom.c:close_rom() is responsible for freeing / nulling:
+    rom
+    rom_filename
+    areas
+    *metadata: {
+        orig_rom
+        orig_rom_filename
+        bgm_title[i] t for i in NUM_SONGS if t != bgm_orig_title[i]
+    }
+    *samples: {
+        samp[i].data for i in 0..127
+    }
+    cur_song
+    rom_packs[i].blocks for i in NUM_PACKS
+    inmem_packs[i].blocks p for i in NUM_PACKS if (p.status & IPACK_INMEM)
+    packs_loaded = { 0xFF, 0xFF, 0xFF }
+    song_playing = FALSE
+    current_block = -1
+
+
+Places cur_song is modified/read:
+    packlist.c:PackListWndProc()
+        if WM_COMMAND == IDC_SONG_MOVE
+            W address
+            W changed
+    packs.c:select_block()
+        freed and redecompiled from get_cur_block()
+    packs.c:save_cur_song_to_pack()
+        W address
+        W changed
+        
+    parser.c - Read Only
+    ==================
+    parser.c:parser_advance()
+        R cur_song.sub
+
+    play.c - Read Only
+    ==================
+    play.c:do_command()
+        if *p == 0xEF
+            R cur_song.sub
+    play.c:load_pattern()
+        R cur_song.repeat
+        R cur_song.repeat_pos
+        R cur_song.order
+        R cur_song.pattern
+    play.c:do_cycle()
+        R cur_song.sub[].track
+    play.c:initialize_state()
+        R cur_song.order_length
+
+    song.c - Read Only
+    ==================
+    song.c:internal_validate_track()
+        cur_song.subs
+
+    songed.c - Read/Write
+    ===================
+    songed.c:order_insert()
+        W cur_song.order
+        W cur_song.order_length
+        W cur_song.repeat_pos
+    songed.c:order_delete()
+        W cur_song.order
+        W cur_song.order_length
+        W cur_song.repeat_pos
+    songed.c:pattern_insert()
+        cur_song.pattern
+        cur_song.patterns

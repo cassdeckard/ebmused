@@ -1,4 +1,5 @@
-#include "ebmusv2.h"
+#include <windows.h>
+#include "structs.h"
 
 // number of bytes following a Ex/Fx code
 const BYTE code_length[] = {
@@ -23,16 +24,16 @@ BYTE *next_code(BYTE *p) {
 	return p;
 }
 
-BOOL parser_advance(struct parser *p) {
+BOOL parser_advance(struct track *subs, struct parser *p) {
 	int chr = *p->ptr;
 	if (chr == 0) {
 		if (p->sub_count == 0) return FALSE;
-		p->ptr = --p->sub_count ? cur_song.sub[p->sub_start].track : p->sub_ret;
+		p->ptr = --p->sub_count ? subs[p->sub_start].track : p->sub_ret;
 	} else if (chr == 0xEF) {
 		p->sub_ret = p->ptr + 4;
 		p->sub_start = *(WORD *)&p->ptr[1];
 		p->sub_count = p->ptr[3];
-		p->ptr = cur_song.sub[p->sub_start].track;
+		p->ptr = subs[p->sub_start].track;
 	} else {
 		if (chr < 0x80)
 			p->note_len = chr;

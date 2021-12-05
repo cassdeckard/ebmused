@@ -209,7 +209,7 @@ void load_pattern_into_tracker() {
 		do {
 			if (*p.ptr >= 0x80 && *p.ptr < 0xE0)
 				pat_length += p.note_len;
-		} while (parser_advance(&p));
+		} while (parser_advance(cur_song.sub, &p));
 		break;
 	}
 /*	{	SCROLLINFO si;
@@ -661,7 +661,7 @@ note:			GetTextExtentPoint32(hdc, codes, length, &extent);
 				rc.left = rc.right;
 				rc.right = r;
 			}
-			parser_advance(&p);
+			parser_advance(cur_song.sub, &p);
 			if (chr == 0 || chr == 0xEF)
 				SetBkColor(hdc, get_bkcolor(p.sub_count));
 		}
@@ -694,7 +694,7 @@ static BOOL cursor_fwd(BOOL select) {
 	}
 	if (byte >= 0x80 && byte < 0xE0)
 		cursor_pos += cursor.note_len;
-	return parser_advance(&cursor);
+	return parser_advance(cur_song.sub, &cursor);
 }
 
 static BOOL cursor_home(BOOL select) {
@@ -854,7 +854,7 @@ static void cursor_to_xy(int x, int y, BOOL select) {
 				if (x < px && maybe_new_cursor.ptr == NULL)
 					maybe_new_cursor = p;
 			}
-		} while (parser_advance(&p));
+		} while (parser_advance(cur_song.sub, &p));
 		SelectObject(hdc, oldfont);
 		ReleaseDC(hwndTracker, hdc);
 	}
