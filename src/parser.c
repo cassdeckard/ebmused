@@ -51,4 +51,3 @@ int parser_get_pattern_length(struct parser *p) {
 	} while (parser_advance(p));
 	return result;
 }
-
