@@ -201,15 +201,11 @@ void load_pattern_into_tracker() {
 	cursor_track = NULL;
 	cursor_moved(FALSE);
 
-	pat_length = 0;
 	for (int ch = 0; ch < 8; ch++) {
 		if (pattop_state.chan[ch].ptr == NULL) continue;
 		struct parser p;
 		parser_init(&p, &pattop_state.chan[ch], cur_song.sub);
-		do {
-			if (*p.ptr >= 0x80 && *p.ptr < 0xE0)
-				pat_length += p.note_len;
-		} while (parser_advance(&p));
+		pat_length = parser_get_pattern_length(&p);
 		break;
 	}
 /*	{	SCROLLINFO si;
