@@ -7,12 +7,13 @@ const BYTE code_length[] = {
 	1, 3, 3, 0, 1, 3, 0, 3, 3, 3, 1, 2, 0, 0, 0, 0
 };
 
-void parser_init(struct parser *p, const struct channel_state *c) {
+void parser_init(struct parser *p, const struct channel_state *c, struct track *subs) {
 	p->ptr = c->ptr;
 	p->sub_start = c->sub_start;
 	p->sub_ret = c->sub_ret;
 	p->sub_count = c->sub_count;
 	p->note_len = c->note_len;
+	p->subs = subs;
 }
 
 BYTE *next_code(BYTE *p) {
@@ -24,16 +25,16 @@ BYTE *next_code(BYTE *p) {
 	return p;
 }
 
-BOOL parser_advance(struct track *subs, struct parser *p) {
+BOOL parser_advance(struct parser *p) {
 	int chr = *p->ptr;
 	if (chr == 0) {
 		if (p->sub_count == 0) return FALSE;
-		p->ptr = --p->sub_count ? subs[p->sub_start].track : p->sub_ret;
+		p->ptr = --p->sub_count ? p->subs[p->sub_start].track : p->sub_ret;
 	} else if (chr == 0xEF) {
 		p->sub_ret = p->ptr + 4;
 		p->sub_start = *(WORD *)&p->ptr[1];
 		p->sub_count = p->ptr[3];
-		p->ptr = subs[p->sub_start].track;
+		p->ptr = p->subs[p->sub_start].track;
 	} else {
 		if (chr < 0x80)
 			p->note_len = chr;

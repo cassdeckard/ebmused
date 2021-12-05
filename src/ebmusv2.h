@@ -72,9 +72,9 @@ void openMidiInDevice(int deviceId, void* callback);
 
 // parser.c
 extern const BYTE code_length[];
-void parser_init(struct parser *p, const struct channel_state *c);
+void parser_init(struct parser *p, const struct channel_state *c, struct track *subs);
 BYTE *next_code(BYTE *p);
-BOOL parser_advance(struct track *subs, struct parser *p);
+BOOL parser_advance(struct parser *p);
 
 // play.c
 extern BYTE spc[65536];

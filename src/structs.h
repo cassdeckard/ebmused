@@ -33,6 +33,7 @@ struct parser {
 	int sub_start;
 	BYTE sub_count;
 	BYTE note_len;
+	struct track *subs;
 };
 
 struct slider {

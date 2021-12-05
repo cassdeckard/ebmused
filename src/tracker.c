@@ -196,7 +196,7 @@ void load_pattern_into_tracker() {
 	SendDlgItemMessage(hwndEditor, IDC_PAT_LIST,
 		CB_SETCURSEL, cur_song.order[pattop_state.ordnum], 0);
 
-	parser_init(&cursor, &state.chan[cursor_chan]);
+	parser_init(&cursor, &state.chan[cursor_chan], cur_song.sub);
 	cursor_pos = state.patpos + state.chan[cursor_chan].next;
 	cursor_track = NULL;
 	cursor_moved(FALSE);
@@ -205,11 +205,11 @@ void load_pattern_into_tracker() {
 	for (int ch = 0; ch < 8; ch++) {
 		if (pattop_state.chan[ch].ptr == NULL) continue;
 		struct parser p;
-		parser_init(&p, &pattop_state.chan[ch]);
+		parser_init(&p, &pattop_state.chan[ch], cur_song.sub);
 		do {
 			if (*p.ptr >= 0x80 && *p.ptr < 0xE0)
 				pat_length += p.note_len;
-		} while (parser_advance(cur_song.sub, &p));
+		} while (parser_advance(&p));
 		break;
 	}
 /*	{	SCROLLINFO si;
@@ -547,7 +547,7 @@ static void tracker_paint(HWND hWnd) {
 	for (int chan = 0; chan < 8; chan++) {
 		struct channel_state *cs = &state.chan[chan];
 		struct parser p;
-		parser_init(&p, cs);
+		parser_init(&p, cs, cur_song.sub);
 		pos = state.patpos + cs->next;
 
 		rc.left = rc.right + 1; // skip divider
@@ -661,7 +661,7 @@ note:			GetTextExtentPoint32(hdc, codes, length, &extent);
 				rc.left = rc.right;
 				rc.right = r;
 			}
-			parser_advance(cur_song.sub, &p);
+			parser_advance(&p);
 			if (chr == 0 || chr == 0xEF)
 				SetBkColor(hdc, get_bkcolor(p.sub_count));
 		}
@@ -694,7 +694,7 @@ static BOOL cursor_fwd(BOOL select) {
 	}
 	if (byte >= 0x80 && byte < 0xE0)
 		cursor_pos += cursor.note_len;
-	return parser_advance(cur_song.sub, &cursor);
+	return parser_advance(&cursor);
 }
 
 static BOOL cursor_home(BOOL select) {
@@ -718,7 +718,7 @@ static BOOL cursor_home(BOOL select) {
 		// Go to the top of the track
 		if (cursor.ptr == pattop_state.chan[cursor_chan].ptr)
 			return FALSE;
-		parser_init(&cursor, &pattop_state.chan[cursor_chan]);
+		parser_init(&cursor, &pattop_state.chan[cursor_chan], cur_song.sub);
 		cursor_pos = 0;
 	}
 	return TRUE;
@@ -815,7 +815,7 @@ static void cursor_to_xy(int x, int y, BOOL select) {
 	struct channel_state *cs = &state.chan[ch];
 	struct parser p;
 	int pos = 0;
-	parser_init(&p, cs);
+	parser_init(&p, cs, cur_song.sub);
 	if (p.ptr != NULL) {
 		char codes[8];
 		int chan_xleft  = (tracker_width * ch       >> 3) + 1;
@@ -854,7 +854,7 @@ static void cursor_to_xy(int x, int y, BOOL select) {
 				if (x < px && maybe_new_cursor.ptr == NULL)
 					maybe_new_cursor = p;
 			}
-		} while (parser_advance(cur_song.sub, &p));
+		} while (parser_advance(&p));
 		SelectObject(hdc, oldfont);
 		ReleaseDC(hwndTracker, hdc);
 	}
@@ -1221,7 +1221,7 @@ static void tracker_keydown(WPARAM wParam) {
 	case VK_RIGHT: move_cursor(cursor_fwd, shift); break;
 	case VK_TAB:
 		set_cur_chan((cursor_chan + (shift ? -1 : 1)) & 7);
-		parser_init(&cursor, &state.chan[cursor_chan]);
+		parser_init(&cursor, &state.chan[cursor_chan], cur_song.sub);
 		cursor_pos = state.patpos + state.chan[cursor_chan].next;
 		cursor_moved(FALSE);
 		break;
