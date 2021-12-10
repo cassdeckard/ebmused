@@ -1,9 +1,16 @@
 #include <stdio.h>
 #define _WIN32_WINNT 0x0500 // for VK_OEM_PERIOD ?????
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
+#endif
 #include <mmsystem.h>
-#include "ebmusv2.h"
+#include "sound.h"
+#include "loadrom.h"
+#include "play.h"
+#include "ctrltbl.h"
+#include "brr.h"
+#include "main.h"
 
 #define IDC_SAMPLIST_CAPTION 1
 #define IDC_SAMPLIST 2

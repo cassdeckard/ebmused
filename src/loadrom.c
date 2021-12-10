@@ -2,9 +2,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
-#include "ebmusv2.h"
+#endif
+
+#include "sound.h"
 #include "id.h"
+#include "ranges.h"
+#include "packs.h"
+#include "loadrom.h"
+#include "play.h"
+#include "main.h"
 
 FILE *rom;
 int rom_size;

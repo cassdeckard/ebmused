@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
-#include "ebmusv2.h"
+#endif
+#include "main.h"
 
 void enable_menu_items(const BYTE *list, int flags) {
 	while (*list) EnableMenuItem(hmenu, *list++, flags);

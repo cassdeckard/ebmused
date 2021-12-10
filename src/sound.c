@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
+#endif
 #include <mmsystem.h>
 #include "id.h"
-#include "ebmusv2.h"
+#include "tracker.h"
+#include "main.h"
 
 int mixrate = 44100;
 int bufsize = 2205;

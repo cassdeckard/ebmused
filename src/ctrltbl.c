@@ -1,6 +1,9 @@
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
-#include "ebmusv2.h"
+#endif
+#include "ctrltbl.h"
+#include "main.h"
 
 void create_controls(HWND hWnd, struct window_template *t, LPARAM cs) {
 	int top = 0;

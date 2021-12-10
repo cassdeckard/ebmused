@@ -1,10 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
+#endif //_WINDOWS_
+#ifndef _WIN32_IE
 #define _WIN32_IE 0x0300
+#endif //_WIN32_IE
 #include <commctrl.h>
-#include "ebmusv2.h"
+#include "ranges.h"
+#include "metadata.h"
+#include "loadrom.h"
+#include "ctrltbl.h"
+#include "main.h"
 
 #define IDC_RLIST_CAPTION 10
 #define IDC_ROM_LIST 11

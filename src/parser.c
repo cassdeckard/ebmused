@@ -1,4 +1,6 @@
+#ifndef _WINDOWS_
 #include <windows.h>
+#endif
 #include "structs.h"
 
 // number of bytes following a Ex/Fx code

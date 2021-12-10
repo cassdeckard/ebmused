@@ -2,8 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
-#include "ebmusv2.h"
+#endif
+
+#include "ranges.h"
+#include "metadata.h"
+#include "loadrom.h"
 
 char *bgm_title[NUM_SONGS];
 BOOL metadata_changed;

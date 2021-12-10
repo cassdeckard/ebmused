@@ -1,11 +1,8 @@
-#ifndef CreateWindow
-typedef unsigned char BYTE;
-typedef unsigned short WORD;
-typedef unsigned long DWORD;
-typedef int BOOL;
-#define FALSE 0
-#define TRUE 1
-typedef void *HWND;
+#ifndef _STRUCTS_H_
+#define _STRUCTS_H_
+
+#ifndef _WINDOWS_
+#include <windows.h>
 #endif
 
 // structure used for track or subroutine
@@ -117,3 +114,5 @@ struct pack {
 	int block_count;
 	struct block *blocks;
 };
+
+#endif //_STRUCTS_H_

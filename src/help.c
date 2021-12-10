@@ -1,6 +1,9 @@
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
-#include "ebmusv2.h"
+#endif
+#include "main.h"
+
 
 #define IDC_HELPTEXT 1
 

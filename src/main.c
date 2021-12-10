@@ -11,10 +11,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
+#endif
 #include <commdlg.h>
 #include <commctrl.h>
-#include "ebmusv2.h"
+#include "sound.h"
+#include "packs.h"
+#include "metadata.h"
+#include "loadrom.h"
+#include "brr.h"
+#include "main.h"
 
 struct song cur_song;
 BYTE packs_loaded[3] = { 0xFF, 0xFF, 0xFF };

@@ -1,7 +1,10 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-#include "ebmusv2.h"
+#include "sound.h"
+#include "parser.h"
+#include "brr.h"
+#include "main.h"
 
 BYTE spc[65536];
 int inst_base = 0x6E00;

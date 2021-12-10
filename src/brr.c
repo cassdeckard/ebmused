@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ebmusv2.h"
+
+#include "play.h"
+#include "brr.h"
 
 struct sample samp[128];
 

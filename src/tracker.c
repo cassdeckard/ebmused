@@ -1,10 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef _WINDOWS_
 #include <windows.h>
+#endif
 #include <mmsystem.h>
 #include "id.h"
-#include "ebmusv2.h"
+
+#include "sound.h"
+#include "song.h" // for decomp_error
+#include "songed.h" // for pattern_insert
+#include "packs.h"
+#include "loadrom.h"
+#include "parser.h"
+#include "ctrltbl.h"
+#include "main.h"
 
 HWND hwndTracker;
 static HWND hwndOrder;

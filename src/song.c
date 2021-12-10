@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ebmusv2.h"
+#include "play.h"
+#include "parser.h"
+#include "main.h"
 
 static char errbuf[60];
 char *decomp_error;

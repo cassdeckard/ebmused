@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ebmusv2.h"
+#include "misc.h"
+#include "parser.h"
+#include "main.h"
 
 void order_insert(int pos, int pat) {
 	int *p = array_insert(&cur_song.order, &cur_song.order_length,
