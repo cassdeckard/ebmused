@@ -43,6 +43,14 @@ BOOL parser_advance(struct parser *p) {
 	return TRUE;
 }
 
+BYTE parser_advance_to_next_note(struct parser *p) {
+	do {
+		if (*(p->ptr) >= 0x80 && *(p->ptr) < 0xE0)
+			break;
+	} while (parser_advance(p));
+	return *(p->ptr);
+}
+
 int parser_get_pattern_length(struct parser *p) {
 	int result = 0;
 	do {

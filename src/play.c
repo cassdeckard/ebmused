@@ -268,11 +268,7 @@ static void do_note(struct song_state *st, struct channel_state *c, int note) {
 	{
 		struct parser p;
 		parser_init(&p, c, cur_song.sub);
-		do {
-			if (*p.ptr >= 0x80 && *p.ptr < 0xE0)
-				break;
-		} while (parser_advance(&p));
-		next_note = *p.ptr;
+		next_note = parser_advance_to_next_note(&p);
 	}
 
 	int rel;
