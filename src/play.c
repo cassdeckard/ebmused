@@ -5,6 +5,7 @@
 #include "parser.h"
 #include "brr.h"
 #include "main.h"
+#include "misc.h"
 
 BYTE spc[65536];
 int inst_base = 0x6E00;
@@ -106,12 +107,12 @@ void calc_freq(struct channel_state *c, int note16) {
 		return;
 	}
 
-	int octave = (note16 >> 8) / 12;
+	int note_octave = (note16 >> 8) / 12;
 	int tone = (note16 >> 8) % 12;
 	int freq = note_freq_table[tone];
 	freq += (note_freq_table[tone+1] - freq) * (note16 & 0xFF) >> 8;
 	freq <<= 1;
-	freq >>= 6 - octave;
+	freq >>= 6 - note_octave;
 
 	BYTE *inst_freq = &spc[inst_base + 6*c->inst + 4];
 	freq *= (inst_freq[0] << 8 | inst_freq[1]);

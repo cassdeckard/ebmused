@@ -8,6 +8,7 @@
 #include "id.h"
 #include "tracker.h"
 #include "main.h"
+#include "misc.h"
 
 int mixrate = 44100;
 int bufsize = 2205;

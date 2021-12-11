@@ -2,6 +2,7 @@
 #include <windows.h>
 #endif
 #include <mmsystem.h>
+#include "misc.h"
 
 static HMIDIIN hMidiIn = NULL;
 

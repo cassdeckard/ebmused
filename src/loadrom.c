@@ -13,6 +13,8 @@
 #include "loadrom.h"
 #include "play.h"
 #include "main.h"
+#include "misc.h"
+#include "song.h"
 
 FILE *rom;
 int rom_size;
@@ -164,6 +166,10 @@ BOOL open_rom(char *filename, BOOL readonly) {
 
 			count++;
 			blocks = realloc(blocks, sizeof(struct block) * count);
+			if (blocks == NULL) {
+				valid = FALSE;
+				goto bad_pointer;
+			}
 			blocks[count-1].size = size;
 			blocks[count-1].spc_address = spc_addr;
 

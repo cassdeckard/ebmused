@@ -6,14 +6,14 @@
 	#define _ARGV _argv
 #endif
 
-#include "id.h"
-#include <io.h>
-#include <stdio.h>
-#include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
 #ifndef _WINDOWS_
 #include <windows.h>
 #endif
+
+#include <io.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <commdlg.h>
 #include <commctrl.h>
 #include "sound.h"
@@ -22,6 +22,9 @@
 #include "loadrom.h"
 #include "brr.h"
 #include "main.h"
+#include "misc.h"
+#include "tracker.h"
+#include "id.h"
 
 struct song cur_song;
 BYTE packs_loaded[3] = { 0xFF, 0xFF, 0xFF };
@@ -276,7 +279,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			DialogBox(hinstance, MAKEINTRESOURCE(IDD_ABOUT), hWnd, AboutDlgProc);
 			break;
 		}
-		default: printf("Command %d not yet implemented\n", id); break;
+		default: printf("Command %u (%02X) not yet implemented\n", id, id); break;
 		}
 		break;
 	}
@@ -304,8 +307,8 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return EXCEPTION_EXECUTE_HANDLER;
 }*/
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine, int nCmdShow)
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
 	hinstance = hInstance;
 	WNDCLASS wc;

@@ -4,6 +4,7 @@
 #include <string.h>
 #include "misc.h"
 #include "text.h"
+#include "song.h"
 
 static int unhex(int chr) {
 	if (chr >= '0' && chr <= '9')
@@ -101,7 +102,7 @@ int text_length(BYTE *start, BYTE *end) {
 			len = 1 + get_code_length(byte);
 			if (byte == 0xEF) {
 				char buf[12];
-				textlength += sprintf(buf, "*%d,%d ", p[1] | p[2] << 8, p[3]);
+				textlength += sprintf(buf, "*%d,%u ", p[1] | p[2] << 8, p[3]);
 			} else {
 				textlength += 3*len + 2;
 			}
@@ -120,15 +121,15 @@ void track_to_text(char *out, BYTE *track, int size) {
 
 		if (byte == 0xEF) {
 			int sub = track[pos+1] | track[pos+2] << 8;
-			out += sprintf(out, "*%d,%d", sub, track[pos + 3]);
+			out += sprintf(out, "*%d,%u", sub, track[pos + 3]);
 		} else {
 			int i;
 			if (byte < 0x80 || byte >= 0xE0) *out++ = '[';
 			for (i = 0; i < len; i++) {
-				int byte = track[pos + i];
+				int byte2 = track[pos + i];
 				if (i != 0) *out++ = ' ';
-				*out++ = "0123456789ABCDEF"[byte >> 4];
-				*out++ = "0123456789ABCDEF"[byte & 15];
+				*out++ = "0123456789ABCDEF"[byte2 >> 4];
+				*out++ = "0123456789ABCDEF"[byte2 & 15];
 			}
 			if (byte < 0x80 || byte >= 0xE0) *out++ = ']';
 		}

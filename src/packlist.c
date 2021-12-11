@@ -13,6 +13,9 @@
 #include "loadrom.h"
 #include "ctrltbl.h"
 #include "main.h"
+#include "packs.h"
+#include "packlist.h"
+#include "misc.h"
 
 #define IDC_RLIST_CAPTION 10
 #define IDC_ROM_LIST 11
@@ -98,7 +101,7 @@ static void show_blocks(HWND packlist, struct pack *p, LV_ITEM *lvi) {
 		sprintf(buf, "%04X-%04X", b->spc_address, b->spc_address + b->size - 1);
 		(void)ListView_SetItem(packlist, lvi);
 		lvi->iSubItem = 2;
-		sprintf(buf, "%d", b->size);
+		sprintf(buf, "%u", b->size);
 		(void)ListView_SetItem(packlist, lvi);
 
 		lvi->iSubItem = 4;
@@ -267,7 +270,7 @@ static void show_rom_packs() {
 		if (i == packs_loaded[2] && !(inmem_packs[i].status & IPACK_CHANGED))
 			show_blocks(packlist, pack, &lvi);
 	}
-	show_free_ranges(packlist);
+	show_free_ranges();
 	if (sort_by != 0)
 		(void)ListView_SortItems(packlist, comparator, sort_by);
 

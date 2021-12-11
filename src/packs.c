@@ -8,6 +8,8 @@
 #include "loadrom.h"
 #include "play.h"
 #include "main.h"
+#include "song.h"
+#include "misc.h"
 
 const DWORD pack_orig_crc[] = {
 	0x35994B97, 0xDB04D065, 0xC13D8165, 0xEEFF028E, 0x5330392D, 0x705AEBBC,
@@ -188,14 +190,14 @@ BOOL save_pack(int pack) {
 	int size = calc_pack_size(p);
 	int conflict = check_range(p->start_address, p->start_address + size, pack);
 	if (conflict != AREA_FREE) {
-		char *p = error;
-		p += sprintf(p, "Pack %02X could not be saved:\n", pack);
+		char *ep = error;
+		ep += sprintf(ep, "Pack %02X could not be saved:\n", pack);
 		if (conflict == AREA_NOT_IN_FILE)
-			strcpy(p, "The ROM address is invalid");
+			strcpy(ep, "The ROM address is invalid");
 		else if (conflict == AREA_NON_SPC)
-			strcpy(p, "The ROM address is not in a range designated for SPC data");
+			strcpy(ep, "The ROM address is not in a range designated for SPC data");
 		else
-			sprintf(p, "Would overlap with pack %02X", conflict);
+			sprintf(ep, "Would overlap with pack %02X", conflict);
 		report_warning(error, "Save");
 		return FALSE;
 	}

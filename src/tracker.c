@@ -16,6 +16,10 @@
 #include "ctrltbl.h"
 #include "main.h"
 #include "misc.h"
+#include "play.h"
+#include "text.h"
+#include "inst.h"
+#include "midi.h"
 
 HWND hwndTracker;
 static HWND hwndOrder;
@@ -1474,7 +1478,7 @@ LRESULT CALLBACK StateWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		show_simple_state(0x52, c->note_style);
 		show_simple_state(0x53, c->finetune);
 		if (c->sub_count) {
-			sprintf(buf, "%d x%d", c->sub_start, c->sub_count);
+			sprintf(buf, "%d x%u", c->sub_start, c->sub_count);
 			show_state(0x54, buf);
 		} else {
 			show_state(0x54, "No");

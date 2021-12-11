@@ -5,6 +5,7 @@
 #include <windows.h>
 #endif
 #include "main.h"
+#include "misc.h"
 
 // number of bytes following a Ex/Fx code
 const BYTE code_length[] = {

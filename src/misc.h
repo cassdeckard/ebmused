@@ -23,11 +23,9 @@ int report_info(char *error, char *title);
 int report_warning(char *error, char *title);
 int report_warning_with_cancel(char *error, char *title);
 int report_error(char *error, char *title);
+int report(char *error, char *title, int flags);
 
-// Don't declare parameters, to avoid pointer conversion warnings
-// (you can't implicitly convert between foo** and void** because of
-//  word-addressed architectures. This is x86 so it's ok)
-void *array_insert(/*void **array, int *size, int elemsize, int index*/);
+void *array_insert(void **array, int *size, int elemsize, int index);
 void array_delete(void *array, int *size, int elemsize, int index);
 
 #endif // _MISC_H_

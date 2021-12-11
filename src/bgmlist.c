@@ -12,6 +12,7 @@
 #include "ctrltbl.h"
 #include "brr.h"
 #include "main.h"
+#include "misc.h"
 
 #define IDC_ROM_FILE 17
 #define IDC_ORIG_ROM_FILE 18
@@ -237,7 +238,7 @@ LRESULT CALLBACK BGMListWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			break;
 		}
 		case IDC_SAVE_INFO: {
-			BYTE new_pack_used[3];
+			BYTE new_pack_used[3] = { 0x00, 0x00, 0x00 };
 			for (int i = 0; i < 3; i++) {
 				int pack = GetDlgItemHex(hWnd, IDC_BGM_IPACK_1 + i);
 				if (pack < 0) break;
@@ -284,13 +285,13 @@ write_error:	report_error(strerror(errno), "Save");
 			}
 			break;
 		case IDC_LOAD_BGM: {
-			BYTE pack_used[3];
+			BYTE new_pack_used[3];
 			int spc_address;
 			for (int i = 0; i < 3; i++) {
-				pack_used[i] = GetDlgItemHex(hWnd, IDC_BGM_IPACK_1 + i);
+				new_pack_used[i] = GetDlgItemHex(hWnd, IDC_BGM_IPACK_1 + i);
 			}
 			spc_address = GetDlgItemHex(hWnd, IDC_BGM_SPCADDR);
-			load_music(pack_used, spc_address);
+			load_music(new_pack_used, spc_address);
 			break;
 		}
 		case IDC_CHANGE_BGM:

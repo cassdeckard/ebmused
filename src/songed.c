@@ -4,6 +4,8 @@
 #include "misc.h"
 #include "parser.h"
 #include "main.h"
+#include "play.h"
+#include "song.h"
 
 void order_insert(int pos, int pat) {
 	int *p = array_insert(&cur_song.order, &cur_song.order_length,

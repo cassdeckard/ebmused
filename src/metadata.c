@@ -9,6 +9,7 @@
 #include "ranges.h"
 #include "metadata.h"
 #include "loadrom.h"
+#include "misc.h"
 
 char *bgm_title[NUM_SONGS];
 BOOL metadata_changed;
@@ -215,6 +216,7 @@ BOOL open_orig_rom(char *filename) {
 	FILE *f = fopen(filename, "rb");
 	if (!f) {
 		report_warning(strerror(errno), filename);
+		return FALSE;
 	}
 	long size = _filelength(_fileno(f));
 	if (size != rom_size) {

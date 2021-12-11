@@ -11,6 +11,8 @@
 #include "ctrltbl.h"
 #include "brr.h"
 #include "main.h"
+#include "misc.h"
+#include "midi.h"
 
 #define IDC_SAMPLIST_CAPTION 1
 #define IDC_SAMPLIST 2
@@ -164,11 +166,11 @@ LRESULT CALLBACK InstTestWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	}
 	case WM_LBUTTONDOWN:
 	case WM_LBUTTONUP: {
-		int octave = LOWORD(lParam) / 20 - 1;
-		if (octave < 0 || octave > 5) break;
+		int octave_offset = LOWORD(lParam) / 20 - 1;
+		if (octave_offset < 0 || octave_offset > 5) break;
 		int note = HIWORD(lParam) / 20 - 1;
 		if (note < 0 || note > 11) break;
-		note += 12 * octave;
+		note += 12 * octave_offset;
 		if (uMsg == WM_LBUTTONDOWN) note_on(note, 24);
 		else note_off(note);
 		break;
