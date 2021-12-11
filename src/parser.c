@@ -2,12 +2,7 @@
 #include <windows.h>
 #endif
 #include "structs.h"
-
-// number of bytes following a Ex/Fx code
-const BYTE code_length[] = {
-	1, 1, 2, 3, 0, 1, 2, 1, 2, 1, 1, 3, 0, 1, 2, 3,
-	1, 3, 3, 0, 1, 3, 0, 3, 3, 3, 1, 2, 0, 0, 0, 0
-};
+#include "misc.h"
 
 void parser_init(struct parser *p, const struct channel_state *c, struct track *subs) {
 	p->ptr = c->ptr;
@@ -16,15 +11,6 @@ void parser_init(struct parser *p, const struct channel_state *c, struct track *
 	p->sub_count = c->sub_count;
 	p->note_len = c->note_len;
 	p->subs = subs;
-}
-
-BYTE *next_code(BYTE *p) {
-	BYTE chr = *p++;
-	if (chr < 0x80)
-		p += *p < 0x80;
-	else if (chr >= 0xE0)
-		p += code_length[chr - 0xE0];
-	return p;
 }
 
 BOOL parser_advance(struct parser *p) {

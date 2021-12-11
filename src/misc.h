@@ -5,6 +5,9 @@
 #include <windows.h>
 #endif
 
+BYTE get_code_length(BYTE chr);
+BYTE *next_code(BYTE *p);
+
 void enable_menu_items(const BYTE *list, int flags);
 #ifdef CreateWindow
 void set_up_hdc(HDC hdc);

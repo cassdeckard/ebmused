@@ -137,7 +137,7 @@ static int calc_vib_disp(struct channel_state *c, int phase) {
 // do a Ex/Fx code
 static void do_command(struct song_state *st, struct channel_state *c) {
 	unsigned char *p = c->ptr;
-	c->ptr += 1 + code_length[*p - 0xE0];
+	c->ptr += 1 + get_code_length(*p);
 	switch (*p) {
 		case 0xE0:
 			set_inst(st, c, p[1]);

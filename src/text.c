@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "parser.h"
+#include "misc.h"
 #include "text.h"
 
 static int unhex(int chr) {
@@ -30,7 +30,7 @@ int calc_track_size_from_text(char *p) {
 			size += 4;
 		} else {
 			sprintf(buf, "Bad character: '%c'", c);
-			report_warning(buf, NULL, 48);
+			report_warning(buf, NULL);
 			return -1;
 		}
 	}
@@ -98,7 +98,7 @@ int text_length(BYTE *start, BYTE *end) {
 			len = 1;
 			textlength += 3;
 		} else {
-			len = 1 + code_length[byte - 0xE0];
+			len = 1 + get_code_length(byte);
 			if (byte == 0xEF) {
 				char buf[12];
 				textlength += sprintf(buf, "*%d,%d ", p[1] | p[2] << 8, p[3]);

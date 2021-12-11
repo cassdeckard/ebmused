@@ -15,6 +15,7 @@
 #include "parser.h"
 #include "ctrltbl.h"
 #include "main.h"
+#include "misc.h"
 
 HWND hwndTracker;
 static HWND hwndOrder;

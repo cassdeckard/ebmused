@@ -1,9 +1,12 @@
+#ifndef _WINDOWS_
+#include <windows.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "play.h"
-#include "parser.h"
 #include "main.h"
+#include "misc.h"
 
 static char errbuf[60];
 char *decomp_error;
@@ -19,7 +22,7 @@ static char *internal_validate_track(BYTE *data, int size, BOOL is_sub) {
 			if (next == size) return "Track can not end with note-length code";
 		} else if (byte >= 0xE0) {
 			if (byte == 0xFF) return "Invalid code [FF]";
-			next += code_length[byte - 0xE0];
+			next += get_code_length(byte);
 			if (next > size) {
 				char *p = strcpy(errbuf, "Incomplete code: [") + 18;
 				for (; pos < size; pos++)

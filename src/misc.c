@@ -6,6 +6,25 @@
 #endif
 #include "main.h"
 
+// number of bytes following a Ex/Fx code
+const BYTE code_length[] = {
+	1, 1, 2, 3, 0, 1, 2, 1, 2, 1, 1, 3, 0, 1, 2, 3,
+	1, 3, 3, 0, 1, 3, 0, 3, 3, 3, 1, 2, 0, 0, 0, 0
+};
+
+BYTE get_code_length(BYTE chr) {
+	return code_length[chr - 0xE0];
+}
+
+BYTE *next_code(BYTE *p) {
+	BYTE chr = *p++;
+	if (chr < 0x80)
+		p += *p < 0x80;
+	else if (chr >= 0xE0)
+		p += get_code_length(chr);
+	return p;
+}
+
 void enable_menu_items(const BYTE *list, int flags) {
 	while (*list) EnableMenuItem(hmenu, *list++, flags);
 }
