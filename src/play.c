@@ -267,7 +267,7 @@ static void do_note(struct song_state *st, struct channel_state *c, int note) {
 	// Search forward for the next note (to see if it's C8). This is annoying
 	// but necessary - C8 can continue the last note of a subroutine as well
 	// as a normal note.
-	int next_note;
+	BYTE next_note;
 	{
 		struct parser p;
 		parser_init(&p, c, cur_song.sub);
