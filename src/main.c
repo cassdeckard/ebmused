@@ -108,7 +108,7 @@ static void tab_selected(int new) {
 
 static void import() {
 	if (packs_loaded[2] >= NUM_PACKS) {
-		MessageBox2("No song pack selected", "Import", MB_ICONEXCLAMATION);
+		report_warning("No song pack selected", "Import");
 		return;
 	}
 
@@ -118,13 +118,13 @@ static void import() {
 
 	FILE *f = fopen(file, "rb");
 	if (!f) {
-		MessageBox2(strerror(errno), "Import", MB_ICONEXCLAMATION);
+		report_warning(strerror(errno), "Import");
 		return;
 	}
 
 	struct block b;
 	if (!fread(&b, 4, 1, f) || b.spc_address + b.size > 0x10000 || _filelength(_fileno(f)) != 4 + b.size) {
-		MessageBox2("File is not an EBmused export", "Import", MB_ICONEXCLAMATION);
+		report_warning("File is not an EBmused export", "Import");
 		goto err1;
 	}
 	b.data = malloc(b.size);
@@ -135,43 +135,10 @@ err1:
 	fclose(f);
 }
 
-/*static void import_spc() {
-	char *file = open_dialog(GetOpenFileName,
-		"SPC Savestates (*.spc)\0*.spc\0All Files\0*.*\0",
-		OFN_FILEMUSTEXIST | OFN_HIDEREADONLY);
-	if (!file) return;
-
-	FILE *f = fopen(file, "rb");
-	if (!f) {
-		MessageBox2(strerror(errno), "Import", MB_ICONEXCLAMATION);
-		return;
-	}
-
-	fseek(f, 0x100, SEEK_SET);
-	fread(spc, 65536, 1, f);
-	fseek(f, 0x1015D, SEEK_SET);
-	int samp_ptrs = fgetc(f) << 8;
-	decode_samples((WORD *)&spc[samp_ptrs]);
-	for (int i = 0; i < 0xfff0; i++) {
-		if (memcmp(&spc[i], "\x8D\x06\xCF\xDA\x14\x60\x98", 7) == 0) {
-			inst_base = spc[i+7] | spc[i+10] << 8;
-			printf("Instruments found: %X\n", inst_base);
-			break;
-		}
-	}
-	int song_addr = spc[0x40] | spc[0x41] << 8;
-	free_song(&cur_song);
-	decompile_song(&cur_song, song_addr - 2, 0xffff);
-	initialize_state();
-	SendMessage(tab_hwnd[current_tab], WM_SONG_IMPORTED, 0, 0);
-
-	fclose(f);
-}*/
-
 static void export() {
 	struct block *b = save_cur_song_to_pack();
 	if (!b) {
-		MessageBox2("No song loaded", "Export", MB_ICONEXCLAMATION);
+		report_warning("No song loaded", "Export");
 		return;
 	}
 
@@ -180,7 +147,7 @@ static void export() {
 
 	FILE *f = fopen(file, "wb");
 	if (!f) {
-		MessageBox2(strerror(errno), "Export", MB_ICONEXCLAMATION);
+		report_warning(strerror(errno), "Export");
 		return;
 	}
 	fwrite(b, 4, 1, f);
@@ -203,7 +170,7 @@ BOOL save_all_packs() {
 	if (packs) {
 		SendMessage(tab_hwnd[current_tab], WM_PACKS_SAVED, 0, 0);
 		sprintf(buf, "%d pack(s) saved", packs);
-		MessageBox2(buf, "Save", MB_OK);
+		report_info(buf, "Save");
 	}
 	save_metadata();
 	return success;
@@ -282,9 +249,9 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case ID_PLAY:
 			if (cur_song.order_length == 0)
-				MessageBox2("No song loaded", "Play", MB_ICONEXCLAMATION);
+				report_warning("No song loaded", "Play");
 			else if (samp[0].data == NULL)
-				MessageBox2("No instruments loaded", "Play", MB_ICONEXCLAMATION);
+				report_warning("No instruments loaded", "Play");
 			else {
 				if (sound_init()) song_playing = TRUE;
 			}

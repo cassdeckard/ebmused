@@ -71,7 +71,7 @@ BOOL close_rom() {
 		else
 			sprintf(buf, "%d packs have unsaved changes.\nDo you want to save?", unsaved_packs);
 
-		int action = MessageBox2(buf, "Close", MB_ICONEXCLAMATION | MB_YESNOCANCEL);
+		int action = report_warning_with_cancel(buf, "Close");
 		if (action == IDCANCEL || (action == IDYES && !save_all_packs()))
 			return FALSE;
 	}
@@ -101,7 +101,7 @@ BOOL close_rom() {
 BOOL open_rom(char *filename, BOOL readonly) {
 	FILE *f = fopen(filename, readonly ? "rb" : "r+b");
 	if (!f) {
-		MessageBox2(strerror(errno), "Can't open file", MB_ICONEXCLAMATION);
+		report_warning(strerror(errno), "Can't open file");
 		return FALSE;
 	}
 
@@ -111,7 +111,7 @@ BOOL open_rom(char *filename, BOOL readonly) {
 	rom_size = _filelength(_fileno(f));
 	rom_offset = rom_size & 0x200;
 	if (rom_size < 0x300000) {
-		MessageBox2("An EarthBound ROM must be at least 3 MB", "Can't open file", MB_ICONEXCLAMATION);
+		report_warning("An EarthBound ROM must be at least 3 MB", "Can't open file");
 		fclose(f);
 		return FALSE;
 	}

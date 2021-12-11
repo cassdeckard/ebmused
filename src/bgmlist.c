@@ -1,9 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
 #ifndef _WINDOWS_
 #include <windows.h>
 #endif
+#include <stdio.h>
+#include <stdlib.h>
 #include "sound.h"
 #include "packs.h"
 #include "metadata.h"
@@ -121,7 +121,7 @@ void load_instruments() {
 		while ((size = fgetw(rom))) {
 			addr = fgetw(rom);
 			if (size + addr >= 0x10000) {
-				MessageBox2("Invalid SPC block", "Error loading instruments", MB_ICONERROR);
+				report_error("Invalid SPC block", "Error loading instruments");
 				return;
 			}
 			fread(&spc[addr], size, 1, rom);
@@ -248,7 +248,7 @@ LRESULT CALLBACK BGMListWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 			fseek(rom, BGM_PACK_TABLE + rom_offset + 3 * selected_bgm, SEEK_SET);
 			if (!fwrite(new_pack_used, 3, 1, rom)) {
-write_error:	MessageBox2(strerror(errno), "Save", MB_ICONERROR);
+write_error:	report_error(strerror(errno), "Save");
 				break;
 			}
 			memcpy(&pack_used[selected_bgm], new_pack_used, 3);
@@ -258,7 +258,7 @@ write_error:	MessageBox2(strerror(errno), "Save", MB_ICONERROR);
 			song_address[selected_bgm] = new_spc_address;
 			fflush(rom);
 			sprintf(buf, "Info for BGM %02X saved!", selected_bgm + 1);
-			MessageBox2(buf, "Song Table Updated", MB_OK);
+			report_info(buf, "Song Table Updated");
 			break;
 		}
 		case IDC_CUR_IPACK_1:

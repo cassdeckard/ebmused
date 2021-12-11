@@ -15,7 +15,12 @@ int fgetw(FILE *f);
 #endif
 BOOL SetDlgItemHex(HWND hwndDlg, int idControl, unsigned int uValue, int size);
 int GetDlgItemHex(HWND hwndDlg, int idControl);
-int MessageBox2(char *error, char *title, int flags);
+
+int report_info(char *error, char *title);
+int report_warning(char *error, char *title);
+int report_warning_with_cancel(char *error, char *title);
+int report_error(char *error, char *title);
+
 // Don't declare parameters, to avoid pointer conversion warnings
 // (you can't implicitly convert between foo** and void** because of
 //  word-addressed architectures. This is x86 so it's ok)

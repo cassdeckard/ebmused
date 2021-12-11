@@ -70,12 +70,12 @@ BOOL split_pattern(int pos) {
 		struct channel_state *c = &split_state.chan[ch];
 		if (c->sub_count && *c->ptr != '\0') {
 			sprintf(buf, "Track %d is inside a subroutine", ch);
-			MessageBox2(buf, "Cannot split", 48/*MB_ICONEXCLAMATION*/);
+			report_warning(buf, "Cannot split");
 			return FALSE;
 		}
 		if (c->next != 0) {
 			sprintf(buf, "Track %d is inside a note", ch);
-			MessageBox2(buf, "Cannot split", 48/*MB_ICONEXCLAMATION*/);
+			report_warning(buf, "Cannot split");
 			return FALSE;
 		}
 	}
@@ -122,7 +122,7 @@ BOOL join_patterns() {
 	int next_pat = cur_song.order[state.ordnum+1];
 	int i;
 	if (this_pat == next_pat) {
-		MessageBox2("Next pattern is same as current", "Cannot join", 48);
+		report_warning("Next pattern is same as current", "Cannot join");
 		return FALSE;
 	}
 	for (i = 0; i < cur_song.order_length; i++) {
@@ -136,7 +136,7 @@ nonconsec:
 			sprintf(buf, "Patterns %d and %d are not always consecutive",
 				this_pat, next_pat);
 error:
-			MessageBox2(buf, "Cannot join", 48/*MB_ICONEXCLAMATION*/);
+			report_warning(buf, "Cannot join");
 			return FALSE;
 		}
 	}

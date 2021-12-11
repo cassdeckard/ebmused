@@ -182,7 +182,7 @@ BOOL save_pack(int pack) {
 		return FALSE;
 
 	if (!orig_rom) {
-		MessageBox2("Before saving a pack, the original ROM file needs to be specified so that it can be used to ensure that no unused remnants of previous versions of the pack are left in the file in such a way that they would increase the patch size.", "Save", 48);
+		report_warning("Before saving a pack, the original ROM file needs to be specified so that it can be used to ensure that no unused remnants of previous versions of the pack are left in the file in such a way that they would increase the patch size.", "Save");
 		return FALSE;
 	}
 	int size = calc_pack_size(p);
@@ -196,7 +196,7 @@ BOOL save_pack(int pack) {
 			strcpy(p, "The ROM address is not in a range designated for SPC data");
 		else
 			sprintf(p, "Would overlap with pack %02X", conflict);
-		MessageBox2(error, "Save", 48);
+		report_warning(error, "Save");
 		return FALSE;
 	}
 
@@ -207,7 +207,7 @@ BOOL save_pack(int pack) {
 	fseek(orig_rom, old_start - 0xC00000 + orig_rom_offset, SEEK_SET);
 	if (!fread(filler, old_size, 1, orig_rom)) {
 error:
-		MessageBox2(strerror(errno), "Save", 16);
+		report_error(strerror(errno), "Save");
 		return FALSE;
 	}
 	fseek(rom, old_start - 0xC00000 + rom_offset, SEEK_SET);

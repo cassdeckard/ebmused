@@ -49,7 +49,7 @@ static char *internal_validate_track(BYTE *data, int size, BOOL is_sub) {
 BOOL validate_track(BYTE *data, int size, BOOL is_sub) {
 	char *err = internal_validate_track(data, size, is_sub);
 	if (err) {
-		MessageBox2(err, NULL, 48/*MB_ICONEXCLAMATION*/);
+		report_warning(err, NULL);
 		return FALSE;
 	}
 	return TRUE;

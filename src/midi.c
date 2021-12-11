@@ -8,7 +8,7 @@ static HMIDIIN hMidiIn = NULL;
 static void outputMidiError(unsigned int err) {
 	char errmsg[256];
 	midiInGetErrorText(err, &errmsg[0], 255);
-	MessageBox2(errmsg, "MIDI Error", MB_ICONEXCLAMATION);
+	report_warning(errmsg, "MIDI Error");
 }
 
 void closeMidiInDevice() {

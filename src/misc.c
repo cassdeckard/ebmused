@@ -51,9 +51,25 @@ int GetDlgItemHex(HWND hwndDlg, int idControl) {
 	return n;
 }
 
+int report_info(char *error, char *title) {
+	return report(error, title, MB_OK); // MB_OK = 0x00000030L = 48
+}
+
+int report_warning(char *error, char *title) {
+	return report(error, title, MB_ICONEXCLAMATION); // MB_ICONEXCLAMATION = 0x00000030L = 48
+}
+
+int report_warning_with_cancel(char *error, char *title) {
+	return report(error, title, MB_ICONEXCLAMATION | MB_YESNOCANCEL); // MB_ICONEXCLAMATION = 0x00000030L = 48
+}
+
+int report_error(char *error, char *title) {
+	return report(error, title, MB_ICONERROR); // MB_ICONERROR = 0x00000010L = 16
+}
+
 // MessageBox takes the focus away and doesn't restore it - annoying,
 // since the user will probably want to correct the error.
-int MessageBox2(char *error, char *title, int flags) {
+int report(char *error, char *title, int flags) {
 	HWND focus = GetFocus();
 	int ret = MessageBox(hwndMain, error, title, flags);
 	SetFocus(focus);

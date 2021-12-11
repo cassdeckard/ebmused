@@ -214,12 +214,11 @@ const char *const bgm_orig_title[NUM_SONGS] = {
 BOOL open_orig_rom(char *filename) {
 	FILE *f = fopen(filename, "rb");
 	if (!f) {
-		MessageBox2(strerror(errno), filename, MB_ICONEXCLAMATION);
-		return FALSE;
+		report_warning(strerror(errno), filename);
 	}
 	long size = _filelength(_fileno(f));
 	if (size != rom_size) {
-		MessageBox2("File is not same size as current ROM", filename, MB_ICONEXCLAMATION);
+		report_warning("File is not same size as current ROM", filename);
 		fclose(f);
 		return FALSE;
 	}
@@ -280,7 +279,7 @@ void save_metadata() {
 	if (!metadata_changed) return;
 	FILE *mf = fopen(md_filename, "w");
 	if (!mf) {
-		MessageBox2(strerror(errno), md_filename, MB_ICONEXCLAMATION);
+		report_warning(strerror(errno), md_filename);
 		return;
 	}
 

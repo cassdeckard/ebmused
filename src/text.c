@@ -30,7 +30,7 @@ int calc_track_size_from_text(char *p) {
 			size += 4;
 		} else {
 			sprintf(buf, "Bad character: '%c'", c);
-			MessageBox2(buf, NULL, 48);
+			report_warning(buf, NULL, 48);
 			return -1;
 		}
 	}

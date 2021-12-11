@@ -39,7 +39,7 @@ int sound_init() {
 	if (error) {
 	    char buf[60];
 		sprintf(buf, "waveOut device could not be opened (%d)", error);
-		MessageBox2(buf, NULL, MB_ICONERROR);
+		report_error(buf, NULL);
 		return 0;
 	}
 
