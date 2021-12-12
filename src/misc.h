@@ -23,6 +23,7 @@ int report_info(char *error, char *title);
 int report_warning(char *error, char *title);
 int report_warning_with_cancel(char *error, char *title);
 int report_error(char *error, char *title);
+int report_error_sys(char *title);
 int report(char *error, char *title, int flags);
 
 void *array_insert(void **array, int *size, int elemsize, int index);

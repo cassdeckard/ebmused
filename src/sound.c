@@ -9,6 +9,7 @@
 #include "tracker.h"
 #include "main.h"
 #include "misc.h"
+#include "play.h"
 
 int mixrate = 44100;
 int bufsize = 2205;

@@ -86,7 +86,7 @@ static void set_bgm_info(BYTE *packs_used, int spc_addr) {
 }
 
 static void show_bgm_info() {
-	sprintf(bgm_num_text + 4, "%d (0x%02X):", selected_bgm+1, selected_bgm+1);
+	sprintf_s(bgm_num_text + 4, sizeof(bgm_num_text) - 4, "%d (0x%02X):", selected_bgm+1, selected_bgm+1);
 	SetDlgItemText(hwndBGMList, IDC_BGM_NUMBER, bgm_num_text);
 	SetDlgItemText(hwndBGMList, IDC_TITLE, bgm_title[selected_bgm]);
 	set_bgm_info(pack_used[selected_bgm], song_address[selected_bgm]);
@@ -104,7 +104,7 @@ static void show_cur_info() {
 		struct pack *p = &inmem_packs[song_pack];
 		for (int i = 0; i < p->block_count; i++) {
 			char buf[5];
-			sprintf(buf, "%04X", p->blocks[i].spc_address);
+			sprintf_s(buf, sizeof(buf), "%04X", p->blocks[i].spc_address);
 			SendMessage(cb, CB_ADDSTRING, 0, (LPARAM)buf);
 		}
 	}
@@ -157,11 +157,13 @@ static void song_search() {
 	int num = strtol(str, &endhex, 16) - 1;
 	if (*endhex != '\0' || num < 0 || num >= NUM_SONGS) {
 		num = selected_bgm;
-		_strlwr(str);
+		_strlwr_s(str, sizeof(str));
 		do {
 			char title[MAX_TITLE_LEN+1];
 			if (++num == NUM_SONGS) num = 0;
-			if (strstr(_strlwr(strcpy(title, bgm_title[num])), str))
+			strcpy_s(title, sizeof(title), bgm_title[num]);
+			_strlwr_s(title, sizeof(title));
+			if (strstr(title, str))
 				break;
 		} while (num != selected_bgm);
 	}
@@ -182,12 +184,12 @@ LRESULT CALLBACK BGMListWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		SetDlgItemText(hWnd, IDC_ROM_FILE, rom_filename);
 		SetDlgItemText(hWnd, IDC_ORIG_ROM_FILE, orig_rom_filename
 			? orig_rom_filename : "None specified (click to set)");
-		sprintf(buf, "%.2f MB", rom_size / 1048576.0);
+		sprintf_s(buf, sizeof(buf), "%.2f MB", rom_size / 1048576.0);
 		SetDlgItemText(hWnd, IDC_ROM_SIZE, buf);
 		HWND list = GetDlgItem(hWnd, IDC_LIST);
 		SendMessage(list, WM_SETREDRAW, FALSE, 0);
 		for (int i = 0; i < NUM_SONGS; i++) {
-			sprintf(buf, "%02X: %s", i+1, bgm_title[i]);
+			sprintf_s(buf, sizeof(buf), "%02X: %s", i+1, bgm_title[i]);
 			SendMessage(list, LB_ADDSTRING, 0, (LPARAM)buf);
 		}
 		SendMessage(list, WM_SETREDRAW, TRUE, 0);
@@ -228,7 +230,7 @@ LRESULT CALLBACK BGMListWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 				free(bgm_title[selected_bgm]);
 			GetDlgItemText(hWnd, IDC_TITLE, buf+4, MAX_TITLE_LEN+1);
 			bgm_title[selected_bgm] = _strdup(buf+4);
-			sprintf(buf, "%02X:", selected_bgm + 1);
+			sprintf_s(buf, sizeof(buf), "%02X:", selected_bgm + 1);
 			buf[3] = ' ';
 			SendDlgItemMessage(hWnd, IDC_LIST, LB_DELETESTRING, selected_bgm, 0);
 			SendDlgItemMessage(hWnd, IDC_LIST, LB_INSERTSTRING, selected_bgm, (LPARAM)buf);
@@ -249,7 +251,7 @@ LRESULT CALLBACK BGMListWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 			fseek(rom, BGM_PACK_TABLE + rom_offset + 3 * selected_bgm, SEEK_SET);
 			if (!fwrite(new_pack_used, 3, 1, rom)) {
-write_error:	report_error(strerror(errno), "Save");
+write_error:	report_error_sys("Save");
 				break;
 			}
 			memcpy(&pack_used[selected_bgm], new_pack_used, 3);
@@ -258,7 +260,7 @@ write_error:	report_error(strerror(errno), "Save");
 				goto write_error;
 			song_address[selected_bgm] = new_spc_address;
 			fflush(rom);
-			sprintf(buf, "Info for BGM %02X saved!", selected_bgm + 1);
+			sprintf_s(buf, sizeof(buf), "Info for BGM %02X saved!", selected_bgm + 1);
 			report_info(buf, "Song Table Updated");
 			break;
 		}

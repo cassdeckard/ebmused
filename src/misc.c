@@ -87,6 +87,12 @@ int report_error(char *error, char *title) {
 	return report(error, title, MB_ICONERROR); // MB_ICONERROR = 0x00000010L = 16
 }
 
+int report_error_sys(char *title) {
+	char sys_msg[64];
+	strerror_s(sys_msg, sizeof(sys_msg), errno);
+	return report_error(sys_msg, title);
+}
+
 // MessageBox takes the focus away and doesn't restore it - annoying,
 // since the user will probably want to correct the error.
 int report(char *error, char *title, int flags) {
