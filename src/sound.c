@@ -112,8 +112,8 @@ static void fill_buffer() {
 			int s1 = s->data[ipos];
 			s1 += (s->data[ipos+1] - s1) * (c->samp_pos & 0x7FFF) >> 15;
 
-			left  += s1 * c->left_vol  * volume;
-			right += s1 * c->right_vol * volume;
+			left  += (int)(s1 * c->left_vol  * volume);
+			right += (int)(s1 * c->right_vol * volume);
 
 //			int sp = c->samp_pos;
 

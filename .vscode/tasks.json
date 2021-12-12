@@ -24,6 +24,8 @@
             "args": [ 
                 "/Zi",
                 "/EHsc",
+                "/W3",
+                "/wo4996", // unsafe io functions
                 "/Fe:",
                 "${workspaceFolder}\\out\\ebmused.exe",
                 "${workspaceFolder}\\src\\*.c",

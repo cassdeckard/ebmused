@@ -15,6 +15,8 @@
 #include "main.h"
 #include "misc.h"
 #include "song.h"
+#include "brr.h"
+#include "metadata.h"
 
 FILE *rom;
 int rom_size;
